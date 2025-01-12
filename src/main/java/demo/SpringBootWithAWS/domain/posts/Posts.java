@@ -1,6 +1,7 @@
 package demo.SpringBootWithAWS.domain.posts;
 
 //domain 패키지는 게시글, 댓글, 회원, 정산 등 소프트웨어에 대한 요구사항, 문제 영역
+import demo.SpringBootWithAWS.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 //Entity 클래스에는 Setter 생성 x
 @NoArgsConstructor
 @Entity
-public class Posts { //엔티티
+public class Posts extends BaseTimeEntity { //엔티티
 
     @Id //테이블의 PK 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,8 @@ public class Posts { //엔티티
         this.author = author;
     }
 
-
-
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

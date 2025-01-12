@@ -1,5 +1,6 @@
 package demo.SpringBootWithAWS.domain.posts;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -47,5 +51,23 @@ public class PostsRepositoryTest {
         assertThat(foundPost.get().getAuthor()).isEqualTo("songhae");
     }
 
+    @Test
+    public void registerBaseTimeEntity(){
+        //given
+        LocalDateTime now = LocalDateTime.now();
+        postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author("songhae")
+                .build());
+        //when
+        List<Posts> postsList = postsRepository.findAll();
 
+        //then
+        Posts posts = postsList.get(0);
+        System.out.println(">>>>>>>> createDate="+posts.getCreatedDate()+", modifiedDate="+posts.getModifiedDate());
+
+        assertThat(posts.getCreatedDate()).isAfter(now);
+        assertThat(posts.getModifiedDate()).isAfter(now);
+    }
 }
