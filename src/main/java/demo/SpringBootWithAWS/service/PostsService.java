@@ -2,12 +2,16 @@ package demo.SpringBootWithAWS.service;
 
 import demo.SpringBootWithAWS.domain.posts.Posts;
 import demo.SpringBootWithAWS.domain.posts.PostsRepository;
+import demo.SpringBootWithAWS.web.PostsListResponseDto;
 import demo.SpringBootWithAWS.web.dto.PostsResponseDto;
 import demo.SpringBootWithAWS.web.dto.PostsSaveRequestDto;
 import demo.SpringBootWithAWS.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,8 +25,8 @@ public class PostsService {
 
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
-        Posts posts = findPostsById(id);
-
+        Posts posts = postsRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글이 없습니다. id = "+ id));
         posts.update(requestDto.getTitle(), requestDto.getContent());
 
         return id;
@@ -30,14 +34,23 @@ public class PostsService {
 
     @Transactional
     public PostsResponseDto findById(Long id) {
-        Posts entity = findPostsById(id);
-
+        Posts entity =  postsRepository.findById(id).orElseThrow(() ->
+                    new IllegalArgumentException("해당 게시글이 없습니다. id = "+ id));
         return new PostsResponseDto(entity);
     }
 
-    //겹치는 부분 리팩토링
-    public Posts findPostsById(Long id){
-        return postsRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 게시글이 없습니다. id = "+ id));
+    @Transactional(readOnly = true) //조회기능만 남겨두어서 속도 개선
+    public List<PostsListResponseDto> findAllDesc(){
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException ("해당 게시물이 없습니다. id ="+id) );
+
+        postsRepository.delete(posts);
     }
 }

@@ -2,9 +2,11 @@ package demo.SpringBootWithAWS.web;
 
 import demo.SpringBootWithAWS.domain.posts.Posts;
 import demo.SpringBootWithAWS.domain.posts.PostsRepository;
+import demo.SpringBootWithAWS.service.PostsService;
 import demo.SpringBootWithAWS.web.dto.PostsSaveRequestDto;
 import demo.SpringBootWithAWS.web.dto.PostsUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +33,8 @@ public class PostsApiControllerTest {
 
     @Autowired
     private PostsRepository postsRepository;
+    @Autowired
+    private PostsService postsService;
 
     @AfterEach
     public void tearDown() throws Exception {
@@ -38,7 +42,8 @@ public class PostsApiControllerTest {
     }
 
     @Test
-    public void registerPost() throws Exception {
+    @DisplayName("게시물 등록")
+    public void savePost() throws Exception {
         //given
         String title = "title";
         String content = "content";
@@ -60,6 +65,7 @@ public class PostsApiControllerTest {
     }
 
     @Test
+    @DisplayName("게시물 수정")
     public void updatePost() throws Exception {
         //given
         Posts savedPosts = postsRepository.save(Posts.builder()
@@ -83,5 +89,26 @@ public class PostsApiControllerTest {
         Posts updatedPosts = postsRepository.findById(updateId).get();
         assertThat(updatedPosts.getTitle()).isEqualTo(expectedTitle);
         assertThat(updatedPosts.getContent()).isEqualTo(expectedContent);
+    }
+
+    @Test
+    @DisplayName("게시물 삭제")
+    public void deletePost() throws Exception {
+        //given
+        String title = "title";
+        String content = "content";
+        Posts savedPosts = postsRepository.save(Posts.builder().title(title).content(content).author("songhae").build());
+
+        //등록되었는지
+        List<Posts> all = postsRepository.findAll();
+        assertThat(all.size()).isEqualTo(1);
+        //when
+        postsService.delete(savedPosts.getId());
+
+        //then, 삭제되었는지
+        all = postsRepository.findAll();
+        assertThat(all.size()).isEqualTo(0);
+
+
     }
 }
