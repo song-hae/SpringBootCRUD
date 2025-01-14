@@ -40,6 +40,9 @@ dependencies {
 	//oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+	//Spring session 추가
+	implementation 'org.springframework.session:spring-session-jdbc'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

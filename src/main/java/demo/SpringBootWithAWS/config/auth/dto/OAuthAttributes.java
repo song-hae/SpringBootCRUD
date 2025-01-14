@@ -25,6 +25,9 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+        if ("naver".equals(registrationId)) {
+            return ofNaver("id", attributes);
+        }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
@@ -38,9 +41,36 @@ public class OAuthAttributes {
                 .build();
     }
 
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
+        //제대로 email이 넘어오는지 로그 확인 : 이상 무
+        System.out.println("attributes: " + attributes);
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        System.out.println("response: " + response);
+        //이후 캐스팅에서 email이 전달되는지 확인 : 이상 무
+        String email = (String) response.get("email");
+        System.out.println("email = " + email);
+//        return OAuthAttributes.builder()
+//                .name((String) attributes.get("name"))
+//                .email((String) attributes.get("email"))
+//                .picture((String) attributes.get("profile_image"))
+//                .attributes(response)
+//                .nameAttributeKey(userNameAttributeName)
+//                .build();
+
+        //attribute가 아니라 response로 바꿨어야 했다..
+        return OAuthAttributes.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .picture((String) response.get("profile_image"))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+
+    }
+
     //가입 시 ROLE을 USER로 설정.
     public User toEntity() {
-        return User.builder()
+         return User.builder()
                 .name(name).email(email).picture(picture).role(Role.USER).build();
     }
 

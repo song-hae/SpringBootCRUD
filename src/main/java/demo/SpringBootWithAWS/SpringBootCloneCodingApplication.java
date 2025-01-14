@@ -11,5 +11,4 @@ public class SpringBootCloneCodingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootCloneCodingApplication.class, args);
 	}
-
 }
