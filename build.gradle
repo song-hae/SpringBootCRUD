@@ -22,7 +22,6 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	annotationProcessor 'org.projectlombok:lombok'
-
 	//lombok test
 	testImplementation 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
@@ -39,10 +38,11 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	//oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
 	//Spring session 추가
 	implementation 'org.springframework.session:spring-session-jdbc'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	//test
+	implementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {

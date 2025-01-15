@@ -1,5 +1,6 @@
 package demo.SpringBootWithAWS.web;
 
+import demo.SpringBootWithAWS.config.auth.SecurityConfig;
 import demo.SpringBootWithAWS.web.dto.HelloResponseDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -75,17 +80,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //
 //}
 
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest(controllers = HelloController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 class HelloControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @WithMockUser(roles = "USER")
     @Test
     void hello() throws Exception{
         mvc.perform(get("/hello")) //"/hello" 경로로 HTTP GET 요청을 테스트로 보냄
                 .andExpect(status().isOk()) //HTTP 상태 코드가 200(OK)인지 확인
                 .andExpect(view().name("hello"));// View 이름 검증
         }
+
+    @WithMockUser(roles = "USER")
     @Test
     void helloDto() throws Exception {
         mvc.perform(get("/hello-dto")
