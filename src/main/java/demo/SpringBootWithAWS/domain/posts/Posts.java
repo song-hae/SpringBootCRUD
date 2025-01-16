@@ -23,7 +23,7 @@ public class Posts extends BaseTimeEntity { //엔티티
     @Column(length = 500, nullable = false) //문자열의 길이 기본값은 255, length로 설정, null이 들어갈 수 없도록
     private String title; //Post 제목
 
-    @Column(length = 500, nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content; //Post 내용
 
     @Column(columnDefinition = "TEXT", nullable = false) //columnDefinition은 테이블 컬럼에 대해 넣을 타입, 형식을 직접 지정

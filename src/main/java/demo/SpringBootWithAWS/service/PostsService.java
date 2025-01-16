@@ -2,7 +2,7 @@ package demo.SpringBootWithAWS.service;
 
 import demo.SpringBootWithAWS.domain.posts.Posts;
 import demo.SpringBootWithAWS.domain.posts.PostsRepository;
-import demo.SpringBootWithAWS.web.PostsListResponseDto;
+import demo.SpringBootWithAWS.web.dto.PostsListResponseDto;
 import demo.SpringBootWithAWS.web.dto.PostsResponseDto;
 import demo.SpringBootWithAWS.web.dto.PostsSaveRequestDto;
 import demo.SpringBootWithAWS.web.dto.PostsUpdateRequestDto;
@@ -32,7 +32,6 @@ public class PostsService {
         return id;
     }
 
-    @Transactional
     public PostsResponseDto findById(Long id) {
         Posts entity =  postsRepository.findById(id).orElseThrow(() ->
                     new IllegalArgumentException("해당 게시글이 없습니다. id = "+ id));

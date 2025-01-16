@@ -4,14 +4,11 @@ import demo.SpringBootWithAWS.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -23,7 +20,7 @@ public class SecurityConfig  {
             "/","/css/**","/images/**","/js/**","/h2-console/**"
     };
 
-    private static final String[] AUTH_BLACKLIST = {
+    private static final String[] AUTH_LIST = {
             "/api/v1/**"
     };
 
@@ -35,7 +32,7 @@ public class SecurityConfig  {
                 .headers(headers-> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers(AUTH_BLACKLIST).hasRole(Role.USER.name())
+                .requestMatchers(AUTH_LIST).hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/"))

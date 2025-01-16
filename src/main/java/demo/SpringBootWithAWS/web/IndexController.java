@@ -22,9 +22,8 @@ public class IndexController {
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts",postsService.findAllDesc());
-        if(user != null) {
-            model.addAttribute("userName",user.getName()); //user가 null이 아니라는 것은 로그인 되어 있다는 의미
-        }
+        if(user != null) model.addAttribute("userName",user.getName()); //user가 null이 아니라는 것은 로그인 되어 있다는 의미
+
         return "index";
     }
 
@@ -32,6 +31,7 @@ public class IndexController {
     public String postsUpdate(@PathVariable Long id, Model model){
         PostsResponseDto responseDto = postsService.findById(id);
         model.addAttribute("posts",responseDto);
+
         return "posts-update";
     }
 }

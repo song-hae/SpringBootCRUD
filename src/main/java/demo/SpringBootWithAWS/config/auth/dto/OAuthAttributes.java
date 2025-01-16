@@ -9,11 +9,11 @@ import java.util.Map;
 
 @Getter
 public class OAuthAttributes {
-    private final Map<String, Object> attributes;
-    private final String nameAttributeKey;
-    private final String name;
-    private final String email;
-    private final String picture;
+    private Map<String, Object> attributes;
+    private String nameAttributeKey;
+    private String name;
+    private String email;
+    private String picture;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
@@ -25,19 +25,17 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if ("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
-        }
+        if ("naver".equals(registrationId)) return ofNaver("id", attributes);
         return ofGoogle(userNameAttributeName, attributes);
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email")) //대소문자 주의...
                 .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
                 .build();
     }
 
@@ -49,15 +47,8 @@ public class OAuthAttributes {
         //이후 캐스팅에서 email이 전달되는지 확인 : 이상 무
         String email = (String) response.get("email");
         System.out.println("email = " + email);
-//        return OAuthAttributes.builder()
-//                .name((String) attributes.get("name"))
-//                .email((String) attributes.get("email"))
-//                .picture((String) attributes.get("profile_image"))
-//                .attributes(response)
-//                .nameAttributeKey(userNameAttributeName)
-//                .build();
 
-        //attribute가 아니라 response로 바꿨어야 했다..
+        //naver가 attribute에서 email을 가져오면 계속해서 null을 가져옴
         return OAuthAttributes.builder()
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
