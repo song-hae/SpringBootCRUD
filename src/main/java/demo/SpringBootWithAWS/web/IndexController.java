@@ -2,12 +2,9 @@ package demo.SpringBootWithAWS.web;
 
 import demo.SpringBootWithAWS.config.auth.LoginUser;
 import demo.SpringBootWithAWS.config.auth.dto.SessionUser;
-import demo.SpringBootWithAWS.domain.posts.PostsRepository;
 import demo.SpringBootWithAWS.service.PostsService;
 import demo.SpringBootWithAWS.web.dto.PostsResponseDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

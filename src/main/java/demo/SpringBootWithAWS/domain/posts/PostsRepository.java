@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+//@Repository 필요 없음
 //DB 레이어 접근자, JPARepository<Entity 클래스, PK 타입>을 통해 기본적인 CRUD 메소드 생성
 public interface PostsRepository extends JpaRepository<Posts, Long> {
     @Query("select p FROM Posts p order by p.id DESC")

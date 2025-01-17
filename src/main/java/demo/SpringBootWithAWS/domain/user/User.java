@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter @NoArgsConstructor @Entity @Table(name = "'user'") //백틱으로 감싸야 함
+@Getter @NoArgsConstructor
+@Table(name = "'user'") //백틱으로 감싸야 함
+@Entity //Entity에는 절대 setter를 만들지 말자. 대신 해당 필드의 값 변경이 필요하다면 그 의도와 목적에 명확한 메소드를 만들자
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service
+@Service //Service는 비즈니스 로직을 처리하지 않고, 트랜잭션, 도메인 간 순서 보장의 역할만
 public class PostsService {
     private final PostsRepository postsRepository;
 

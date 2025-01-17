@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //WebMvcTest는 JPA가 작동하지 않기 때문에 SpringBootTest와 TestRestTemplate 사용
 public class PostsApiControllerTest {
 
     @LocalServerPort
@@ -42,6 +42,7 @@ public class PostsApiControllerTest {
 
     @Autowired
     private PostsRepository postsRepository;
+
     @Autowired
     private PostsService postsService;
 

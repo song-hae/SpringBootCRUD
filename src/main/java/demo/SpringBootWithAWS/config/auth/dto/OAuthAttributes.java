@@ -62,7 +62,7 @@ public class OAuthAttributes {
     //가입 시 ROLE을 USER로 설정.
     public User toEntity() {
          return User.builder()
-                .name(name).email(email).picture(picture).role(Role.USER).build();
+                .name(name).email(email).picture(picture).role(Role.GUEST).build();
     }
 
 }
